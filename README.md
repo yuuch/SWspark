@@ -1,4 +1,4 @@
-#SWspark
+# SWspark
 1. You need to install some python packages(include Bio,pyspark and numpy)
 which can be installed by Python's package manager pip.
 Here are simplest way to install pacakges:
