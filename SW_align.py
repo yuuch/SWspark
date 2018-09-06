@@ -115,8 +115,10 @@ if __name__ == "__main__":
     write_to = open('single_machine.txt','w')
     sequences_result = sorted(sequences_result,key=lambda x:x[1],reverse=True)
     top_k = sequences_result[0:7]
+
     for ele in top_k:
-        write_to.write(str(ele)+'\n')
+        write_to.write(','.join(str(x) for x in ele))
+        write_to.write('\n')
     used_time = time.time()-start_time
     write_to.write('single_machine used: '+str(int(used_time))+'seconds')
 

@@ -38,7 +38,6 @@ sh Smith_Waterman_spark.sh
 
 ```
 python SW_align.py  
-
 ```
 Result will be write to 'single_machine.txt'.
 
