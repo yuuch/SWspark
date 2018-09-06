@@ -1,19 +1,14 @@
-<<<<<<< HEAD
 # Smith-Waterman algorithm running on Spark paltform(python implemented)
 1.You need to install some python packages(include biopython,pyspark and numpy)
-=======
-# SWspark
-1. You need to install some python packages(include Bio,pyspark and numpy)
->>>>>>> 4ed5e3a90817a8ceffaba61b04420aa1b11c6ba8
 which can be installed by Python's package manager pip.
 Here are simplest way to install pacakges:
-
+'''
 pip install biopython  
 
 pip install numpy   
 
 pip install pyspark  
-
+'''
 If you can't install packages successfully,please google it.
 
 2. now you can move all these files(include SW_align.py,SWSpark.py,query.file,
