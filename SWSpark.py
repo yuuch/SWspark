@@ -1,7 +1,10 @@
-# python 2.7.12
+# python --version 2.7.12
+from pyspark import SparkContext
+from Bio.SubsMat import MatrixInfo
+import time
+import SW_align
 import numpy as np
 import time
-from Bio.SubsMat import MatrixInfo
 def alignment(dbs,query,sub_mat, gap_o=5, gap_e=1):
     '''
     dbs :[sequence_name,sequence];
@@ -96,6 +99,7 @@ def alignment(dbs,query,sub_mat, gap_o=5, gap_e=1):
         last_num = num
     return dbs[0],M,aligned_seq1,aligned_seq2 # M the max element in score Matrix
     
+'''
 if __name__ == "__main__":
     start_time = time.time()
     dbfile = open('db.file')
@@ -119,11 +123,7 @@ if __name__ == "__main__":
         write_to.write(str(ele)+'\n')
     used_time = time.time()-start_time
     write_to.write('single_machine used: '+str(int(used_time))+'seconds')
-
-
-
-
-
+'''
 '''
 test for sw example
 if __name__ == "__main__":
@@ -141,4 +141,39 @@ if __name__ == "__main__":
                 sub_mat[(bases[i],bases[j])] =-3
     result = alignment(seq1,seq2,sub_mat,gap_o=1)
     print(result)
+'''
+start_time = time.time()
+sc =SparkContext()
+# substitute matrix blosum50
+sub_mat = MatrixInfo.blosum50
+#sub_mat = sc.broadcast(sub_mat)
+# read files and 
+db = sc.textFile('db.file')
+db =db.map(lambda x: x.split(','))
+#print(db.take(20))
+query = sc.textFile('query.file')
+query = query.collect()[0]
+#query = sc.broadcast(query)
+aligned = db.map(lambda x:alignment(dbs=x,query=query,sub_mat=sub_mat))
+aligned = aligned.sortBy(lambda x:x[1],ascending=False)
+#element in this rdd looks like:(seq_name,max_score,aligned_db,aligned_query)
+#ks = [3,5,7]
+#for k in ks:
+aligned.persist()
+aligned_csv = aligned.map(lambda x:','.join(str(d) for d in x))
+aligned_csv.saveAsTextFile('aligned.csv')
+#$top_k = aligned.sortBy(lambda x:x[1],ascending=False).take(k)
+#top_k = sc.parallelize(top_k)
+#top_k.persist()
+#    file_name = 'top_'+str(k)+'_result'
+#    f = open(file_name,'w')
+#    f.write('#seq_name, #max_score, #aligned_db ,#aligned_query\n')
+#    for ele in top_k:
+#        f.write(str(ele))
+'''
+def del_change_line(s):
+    s[1]=s[1][0:-1]
+    return[s[0],s[1]]
+db = db.map(del_change_line)
+print(db.collect())
 '''
