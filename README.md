@@ -1,4 +1,5 @@
-# Smith-Waterman algorithm running on Spark paltform(python implemented)
+# SWSpark
+
 1. You need to install some python packages(include biopython,pyspark and numpy)
 which can be installed by Python's package manager pip.
 Here are simplest way to install pacakges:  
